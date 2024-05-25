@@ -21,8 +21,7 @@ public class Program {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		System.out.print("Enter department's name: ");
-		String tempDepartment = sc.nextLine();
-		Department department = new Department(tempDepartment);
+		String departmentName = sc.nextLine();		
 		System.out.println("Enter worker data:");
 		System.out.print("Name: ");
 		String name = sc.nextLine();
@@ -33,29 +32,27 @@ public class Program {
 		System.out.print("How many contracts to this worker? ");
 		int quantity = sc.nextInt();
 		
-		Worker worker = new Worker(department, name, WorkerLevel.valueOf(level), baseSalary);
+		Worker worker = new Worker(new Department(departmentName), name, WorkerLevel.valueOf(level), baseSalary);
 		
-		for(int i = 0; i < quantity; i++) {
-			System.out.println("Enter contract #" + (i + 1) + " data:");
+		for(int i = 1; i <= quantity; i++) {
+			System.out.println("Enter contract #" + i + " data:");
 			System.out.print("Date (DD/MM/YYYY): ");
-			String tempDate = sc.next();
-			Date date = sdf.parse(tempDate);
+			Date contractDate = sdf.parse(sc.next());
 			System.out.print("Value per hour: ");
 			double valuePerHour = sc.nextDouble();
 			System.out.print("Duration (hours): ");
 			int hours = sc.nextInt();			
-			HourContract contract = new HourContract(date, valuePerHour, hours);
-			worker.addContract(contract);
+			worker.addContract(new HourContract(contractDate, valuePerHour, hours));
 		}
 		
 		System.out.println();
 		System.out.print("Enter month and year to calculate income (MM/YYYY): ");
-		String tempDate = sc.next();
-		int month = Integer.parseInt(tempDate.substring(0, 2));
-		int year = Integer.parseInt(tempDate.substring(3));
+		String monthAndYear = sc.next();
+		int month = Integer.parseInt(monthAndYear.substring(0, 2));
+		int year = Integer.parseInt(monthAndYear.substring(3));
 		double income = worker.income(year, month);
 		System.out.println(worker);
-		System.out.println("Income for " + tempDate + ": " + income);
+		System.out.println("Income for " + monthAndYear + ": " + income);
 		
 		sc.close();
 	}
